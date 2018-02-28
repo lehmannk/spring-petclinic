@@ -34,5 +34,11 @@ pipeline {
         
       }
     }
+    stage('Archiving') {
+      steps {
+        junit '**/target/surefire-reports/TEST-*.xml'
+        archiveArtifacts 'target/*.jar'
+      }
+    }
   }
 }
