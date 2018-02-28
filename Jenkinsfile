@@ -1,11 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/lehmannk/spring-petclinic.git'
-      }
-    }
     stage('Build') {
       steps {
         withMaven(maven: 'M3') {
@@ -34,7 +29,7 @@ pipeline {
     stage('Package') {
       steps {
         withMaven(maven: 'M3') {
-          sh 'mvn verify'
+          sh 'mvn -Dmaven.test.skip=true verify'
         }
         
       }
