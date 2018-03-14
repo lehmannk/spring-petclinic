@@ -1,44 +1,6 @@
-pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        withMaven(maven: 'M3') {
-          sh 'mvn clean compile'
-        }
-        
-      }
-    }
-    stage('Test') {
-      parallel {
-        stage('UnitTest') {
-          steps {
-            withMaven(maven: 'M3') {
-              sh 'mvn -Dmaven.test.failure.ignore test'
-            }
-            
-          }
-        }
-        stage('IntegrationTest') {
-          steps {
-            echo 'testing integration...'
-          }
-        }
-      }
-    }
-    stage('Package') {
-      steps {
-        withMaven(maven: 'M3') {
-          sh 'mvn -Dmaven.test.skip=true verify'
-        }
-        
-      }
-    }
-    stage('Archiving') {
-      steps {
-        junit '**/target/surefire-reports/TEST-*.xml'
-        archiveArtifacts 'target/*.jar'
-      }
-    }
-  }
+@Library("Simple-Pipeline-Lib") _
+standardPipeline {
+    repoUrl = "https://github.com/lehmannk/spring-petclinic.git"
+    projectName = "Project1"
+    serverDomain = "Project1 Server Domain"
 }
